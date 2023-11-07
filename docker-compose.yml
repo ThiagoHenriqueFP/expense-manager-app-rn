@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    hostname: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: exp-mng
+
+  api:
+    image: thiagohfp/exp-mng
+    depends_on:
+      - db
+    ports:
+      - "3333:3333"
+    restart: on-failure
