@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import Routes from "./src/routes";
+import { loadAsync } from "expo-font";
+import { AuthProvider } from "./src/context/AuthContext";
+import { NavigationContainer } from "@react-navigation/native";
+import { UserProvider } from "./src/context/UserContext";
+import { Text } from "react-native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fonts = {
+    Poppins: require("./assets/fonts/Poppins.ttf"),
+  };
+
+  (async () => {
+    await loadAsync(fonts);
+    setIsLoading(false);
+  })();
+
+  return isLoading ? (
+    <Text>carregando</Text>
+  ) : (
+    <NavigationContainer>
+      <AuthProvider>
+        <UserProvider>
+          <Routes />
+        </UserProvider>
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
