@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IPayment } from "../../context/UserContext";
 import { axiosInstance } from "../../utils/axios";
 import { ActivityIndicator, Alert, FlatList, SafeAreaView } from "react-native";
@@ -14,6 +14,7 @@ import {
   TextContainer,
 } from "./styled";
 import GoBackButton from "../../components/goBackButton";
+import { AuthContext } from "../../context/AuthContext";
 
 interface IProps {
   paymentId: number;
@@ -35,13 +36,19 @@ interface ExpandedPayment {
 export default function ListDebts({ route }: any) {
   const [payment, setPayment] = useState<IDebts[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { data } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
       try {
         if (isLoading) {
           const response = await axiosInstance.get(
-            `/payments/${route.params.id}/debts`
+            `/payments/${route.params.id}/debts`,
+            {
+              headers: {
+                Authorization: `Bearer ${data.token}`,
+              },
+            }
           );
           setPayment(response.data);
           setIsLoading(false);

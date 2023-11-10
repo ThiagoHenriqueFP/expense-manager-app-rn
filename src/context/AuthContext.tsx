@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../utils/axios";
 import { Alert } from "react-native";
+import { jwtDecode } from "jwt-decode";
+import base64 from "react-native-base64";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const userData = "@exp-mng:user";
@@ -10,6 +12,7 @@ interface IUser {
   name: string;
   email: string;
   wage: number;
+  token: string;
 }
 
 interface ICredentials {
@@ -53,14 +56,25 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({
     username,
   }: ICredentials): Promise<boolean> {
     try {
-      const response = await axiosInstance.post("/login", {
-        username: username,
+      const response = await axiosInstance.post("/auth/login", {
+        username: username.toLowerCase(),
         password: password,
       });
 
-      const user: IUser = response.data;
+      const token: string = response.data.token;
+      const decoded: string = base64.decode(token.split(".")[1]);
 
-      AsyncStorage.setItem(userData, JSON.stringify(user));
+      const parsed = JSON.parse(decoded);
+
+      const user: IUser = {
+        id: parsed.userId,
+        name: parsed.name,
+        email: parsed.username,
+        wage: parsed.wage,
+        token: token,
+      };
+
+      await AsyncStorage.setItem(userData, JSON.stringify(user));
       setData(user);
 
       return true;

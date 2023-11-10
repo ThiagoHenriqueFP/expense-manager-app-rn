@@ -27,7 +27,7 @@ export default function RegisterAccount() {
           wage: Number.parseFloat(wage),
         };
 
-        await axiosInstance.post("/users", body);
+        await axiosInstance.post("/auth/register", body);
 
         setName("");
         setEmail("");

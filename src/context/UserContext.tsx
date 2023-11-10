@@ -53,11 +53,21 @@ export const UserProvider: React.FunctionComponent<IProps> = ({
     try {
       if (data.id) {
         const fetchSinglePayment = await axiosInstance.get(
-          `/user/${data.id}/payments/?date=${parsedDate}`
+          `/users/${data.id}/payments/?date=${parsedDate}`,
+          {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          }
         );
 
         const fetchAllPayments = await axiosInstance.get(
-          `/user/${data.id}/payments/`
+          `/users/${data.id}/payments/`,
+          {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          }
         );
 
         setPaymentData(fetchSinglePayment.data.payment);

@@ -34,7 +34,11 @@ export default function AddDebt() {
             day: "2-digit",
           }),
         };
-        await axiosInstance.post(`/debts`, obj);
+        await axiosInstance.post(`/debts`, obj, {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        });
         await load();
 
         setValue("");

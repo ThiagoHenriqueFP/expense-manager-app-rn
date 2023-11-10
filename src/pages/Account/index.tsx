@@ -49,7 +49,11 @@ export default function Account() {
         email,
         wage,
       };
-      await axiosInstance.patch(`/users/${data.id}`, body);
+      await axiosInstance.patch(`/users/${data.id}`, body, {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      });
 
       handleEditMode(false);
     } catch (error) {
