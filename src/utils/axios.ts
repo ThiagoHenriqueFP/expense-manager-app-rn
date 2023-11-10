@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+//  https://exp-mngr.vercel.app/
+
 export const axiosInstance = axios.create({
-  baseURL: `http://192.168.1.7:3333`
+  baseURL: `https://exp-mngr.vercel.app/`
 });
