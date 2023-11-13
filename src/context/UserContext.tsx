@@ -25,6 +25,7 @@ interface IData {
   metrics: IMetrics;
   allPayments: IPayment[];
   load(): Promise<void>;
+  unload(): void;
 }
 
 interface IProps {
@@ -75,10 +76,11 @@ export const UserProvider: React.FunctionComponent<IProps> = ({
         setAllPayments(fetchAllPayments.data);
       }
     } catch (error) {
-      let message: string = "an error occoured";
-      if (error instanceof Error) message = error.message;
-      Alert.alert("error", message);
-      console.log(error);
+      if (error instanceof Error) {
+        const message = error.message;
+        Alert.alert("error", message);
+        console.log(error);
+      }
     }
   }
 
@@ -88,6 +90,12 @@ export const UserProvider: React.FunctionComponent<IProps> = ({
     })();
   }, []);
 
+  function unload() {
+    setAllPayments([]);
+    setMetricsData({} as IMetrics);
+    setPaymentData({} as IPayment);
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -95,6 +103,7 @@ export const UserProvider: React.FunctionComponent<IProps> = ({
         metrics: metricsData,
         allPayments: allPayemnts,
         load,
+        unload,
       }}
     >
       {children}

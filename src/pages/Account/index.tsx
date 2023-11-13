@@ -25,9 +25,11 @@ import Icon from "react-native-vector-icons/EvilIcons";
 import { DEFAULT_DARK_GREY, DEFAULT_WHITE } from "../../utils/colors";
 import { axiosInstance } from "../../utils/axios";
 import { useNavigation } from "@react-navigation/native";
+import { UserContext } from "../../context/UserContext";
 
 export default function Account() {
   const { data, logout } = useContext(AuthContext);
+  const { unload } = useContext(UserContext);
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState(data.name);
   const [email, setEmail] = useState(data.email);
@@ -65,6 +67,7 @@ export default function Account() {
   }
 
   function handleLogout() {
+    unload();
     logout();
     navigate("Login");
   }

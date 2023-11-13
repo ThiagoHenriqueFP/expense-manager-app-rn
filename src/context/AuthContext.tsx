@@ -87,7 +87,7 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({
   }
 
   async function logout() {
-    await AsyncStorage.setItem(userData, "");
+    await AsyncStorage.clear();
   }
 
   return (
