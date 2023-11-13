@@ -18,8 +18,8 @@ interface NavigationProp {
 export default function Login() {
   const { signIn } = React.useContext(AuthContext);
   const { navigate } = useNavigation<NavigationProp>();
-  const [username, setUsername] = useState<string>("mail@mail.com");
-  const [password, setPassword] = useState<string>("Qwerty");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   async function handleSubmit() {
     if (username && password) {

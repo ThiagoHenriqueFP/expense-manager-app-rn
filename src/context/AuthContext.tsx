@@ -3,6 +3,7 @@ import { axiosInstance } from "../utils/axios";
 import { Alert } from "react-native";
 import base64 from "react-native-base64";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import parseResponse from "../utils/checkResponse";
 
 const userData = "@exp-mng:user";
 
@@ -62,7 +63,7 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({
 
       const token: string = response.data.token;
       let decoded: string = base64.decode(token.split(".")[1]);
-      decoded = decoded.substring(0, decoded.length - 1);
+      decoded = parseResponse(decoded);
 
       const parsed = JSON.parse(decoded);
 
