@@ -10,6 +10,7 @@ import Chart from "../../components/chart";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { LoaderView } from "../loader/styled";
+import { StatsContainerView } from "./styled";
 
 export default function StatsContainer() {
   const { metrics, payment, load } = useContext(UserContext);
@@ -43,7 +44,7 @@ export default function StatsContainer() {
 
   if (!checkIsEmpty())
     return (
-      <View style={style.statsContainer}>
+      <StatsContainerView>
         <Divider>
           <Separator>
             <Text style={[style.defaultText, style.boldText]}>
@@ -76,12 +77,12 @@ export default function StatsContainer() {
             <Text style={{ color: DEFAULT_YELLOW }}>Valor gasto</Text>
           </View>
         </Divider>
-      </View>
+      </StatsContainerView>
     );
 
   if (checkIsEmpty()) {
     return (
-      <View style={style.statsContainer}>
+      <StatsContainerView>
         <Divider empty>
           <Container>
             <Separator direction="row">
@@ -92,7 +93,7 @@ export default function StatsContainer() {
             </Separator>
           </Container>
         </Divider>
-      </View>
+      </StatsContainerView>
     );
   }
 }
@@ -106,18 +107,6 @@ const style = StyleSheet.create({
 
   boldText: {
     fontWeight: "bold",
-  },
-
-  statsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: DEFAULT_DARK_GREY,
-    margin: 25,
-    marginTop: 48,
-    padding: 25,
-    borderRadius: 25,
-    flex: 1,
-    minHeight: 200,
   },
 
   separator: {
