@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../utils/axios";
 import { Alert } from "react-native";
-import { jwtDecode } from "jwt-decode";
 import base64 from "react-native-base64";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -62,7 +61,8 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({
       });
 
       const token: string = response.data.token;
-      const decoded: string = base64.decode(token.split(".")[1]);
+      let decoded: string = base64.decode(token.split(".")[1]);
+      decoded = decoded.substring(0, decoded.length - 1);
 
       const parsed = JSON.parse(decoded);
 
