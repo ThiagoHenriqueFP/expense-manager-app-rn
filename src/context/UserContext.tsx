@@ -51,37 +51,49 @@ export const UserProvider: React.FunctionComponent<IProps> = ({
     .replaceAll("/", "-");
 
   async function load() {
-    try {
-      if (data.id) {
-        const fetchSinglePayment = await axiosInstance.get(
-          `/users/${data.id}/payments/?date=${parsedDate}`,
-          {
-            headers: {
-              Authorization: `Bearer ${data.token}`,
-            },
-          }
-        );
+    if (data.id) {
+      const fetchSinglePayment = await axiosInstance.get(
+        `/users/${data.id}/payments/?date=${parsedDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
 
-        const fetchAllPayments = await axiosInstance.get(
-          `/users/${data.id}/payments/`,
-          {
-            headers: {
-              Authorization: `Bearer ${data.token}`,
-            },
-          }
-        );
+      const fetchAllPayments = await axiosInstance.get(
+        `/users/${data.id}/payments/`,
+        {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
 
+      if (
+        fetchSinglePayment.status === 400 ||
+        fetchAllPayments.status === 400
+      ) {
+        Alert.alert(
+          "Sem dados para exibir",
+          "Comece a cadastrar débitos para ver os dados"
+        );
+      } else if (
+        fetchSinglePayment.status === 500 ||
+        fetchAllPayments.status === 500
+      ) {
+        Alert.alert("Erro", "an error occoured");
+      } else {
         setPaymentData(fetchSinglePayment.data.payment);
         setMetricsData(fetchSinglePayment.data.metrics);
         setAllPayments(fetchAllPayments.data);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        const message = error.message;
-        Alert.alert("error", message);
-        console.log(error);
-      }
     }
+    // if (error instanceof Error) {
+    //   const message = error.message;
+    //
+    //   console.log(error);
+    // }
   }
 
   useEffect(() => {
